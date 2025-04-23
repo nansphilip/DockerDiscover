@@ -1,0 +1,58 @@
+services:
+    front:
+        build:
+            context: ./todo-app
+            dockerfile: Dockerfile
+        container_name: front
+        ports:
+            - "3000:3000"
+        restart: unless-stopped
+        depends_on:
+            - back
+        networks:
+            - common-network
+
+    back:
+        build:
+            context: ./todo-api
+            dockerfile: Dockerfile
+        container_name: back
+        ports:
+            - "5000:5000"
+        restart: unless-stopped
+        depends_on:
+            db:
+                condition: service_healthy
+        networks:
+            - common-network
+
+    db:
+        image: mysql:9.3
+        container_name: db
+        restart: unless-stopped
+        environment:
+            - MYSQL_DATABASE=todo_db
+            - MYSQL_USER=todo_user
+            - MYSQL_PASSWORD=todo_password
+            - MYSQL_ROOT_PASSWORD=root_password
+        volumes:
+            - mysql-volume:/var/lib/mysql
+        ports:
+            - "3306:3306"
+        networks:
+            - common-network
+        healthcheck:
+            test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot_password"]
+            interval: 5s
+            timeout: 5s
+            retries: 10
+            start_period: 60s
+
+volumes:
+    mysql-volume:
+        name: data
+
+networks:
+    common-network:
+        name: common-network
+        driver: bridge
