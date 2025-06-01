@@ -1,19 +1,19 @@
-import { 
-  Controller, 
-  Get, 
-  Post, 
-  Put, 
-  Delete, 
-  Body, 
-  Param, 
-  HttpStatus, 
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
   HttpCode,
-  ParseIntPipe
+  HttpStatus,
+  Param,
+  ParseIntPipe,
+  Post,
+  Put,
 } from '@nestjs/common';
-import { TodosService } from './todos.service';
-import { Todo } from './models/todo.model';
 import { CreateTodoDto } from './dtos/create-todo.dto';
 import { UpdateTodoDto } from './dtos/update-todo.dto';
+import { Todo } from './models/todo.model';
+import { TodosService } from './todos.service';
 
 /**
  * Controller responsible for handling Todo-related endpoints
@@ -84,4 +84,4 @@ export class TodosController {
   adminTest(): { message: string } {
     return { message: 'Todo controller is working!' };
   }
-} 
+}

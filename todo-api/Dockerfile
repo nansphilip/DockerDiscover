@@ -9,6 +9,7 @@ COPY package.json package-lock.json ./
 RUN npm install
 
 COPY . .
+COPY .env.docker.example .env
 
 RUN npm run prisma:generate
 RUN npm run build
@@ -20,8 +21,8 @@ COPY package.json package-lock.json ./
 RUN npm install --omit=dev
 
 COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/generated ./generated
-COPY --from=builder /app/.env ./.env
+COPY --from=builder /app/prisma/client ./prisma/client
+COPY --from=builder /app/.env.docker.example ./.env
 COPY --from=builder /app/prisma ./prisma
 
 EXPOSE 5000

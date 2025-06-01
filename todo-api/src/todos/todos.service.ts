@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Todo } from './models/todo.model';
+import { PrismaService } from '../prisma/prisma.service';
 import { CreateTodoDto } from './dtos/create-todo.dto';
 import { UpdateTodoDto } from './dtos/update-todo.dto';
-import { PrismaService } from '../prisma/prisma.service';
+import { Todo } from './models/todo.model';
 
 /**
  * Service responsible for managing Todo items
@@ -87,4 +87,4 @@ export class TodosService {
       throw new NotFoundException(`Todo with ID ${id} not found`);
     }
   }
-} 
+}
